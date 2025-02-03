@@ -25,16 +25,16 @@ class StockTaxCalculatorServiceUnitTest {
     }
 
     @Test
-    void testCalculateBuyOrder_NoTax() {
+    void when_OnlyPurchaseTransaction_Expect_NoTax() {
         StockOrder buyOrder = new StockOrder(OrderType.BUY, new BigDecimal("50.00"), 100);
         List<Rate> rates = taxCalculatorService.calculate(List.of(buyOrder));
 
         assertEquals(1, rates.size());
-        assertEquals(new BigDecimal("0.00"), rates.get(0).tax());
+        assertEquals(new BigDecimal("0.00"), rates.getFirst().tax());
     }
 
     @Test
-    void testCalculateSellOrder_NoProfit_NoTax() {
+    void calculateSellOrder_NoProfit_Expect_NoTax() {
         stockState.setAveragePrice(new StockOrder(OrderType.BUY, new BigDecimal("50.00"), 100));
         StockOrder sellOrder = new StockOrder(OrderType.SELL, new BigDecimal("50.00"), 100);
 
@@ -45,11 +45,11 @@ class StockTaxCalculatorServiceUnitTest {
     }
 
     @Test
-    void testCalculateSellOrder_WithProfit_TaxableAboveLimit() {
+    void calculateSellOrder_WithProfitAboveTaxLimit_Expect_TaxApplied() {
         StockOrder buyOrder = new StockOrder(OrderType.BUY, new BigDecimal("40.00"), 500);
         StockOrder sellOrder = new StockOrder(OrderType.SELL, new BigDecimal("50.00"), 500);
 
-        List<Rate> rates = taxCalculatorService.calculate(List.of(buyOrder,sellOrder));
+        List<Rate> rates = taxCalculatorService.calculate(List.of(buyOrder, sellOrder));
 
         assertEquals(2, rates.size());
         assertEquals(new BigDecimal("0.00"), rates.getFirst().tax());
@@ -57,11 +57,11 @@ class StockTaxCalculatorServiceUnitTest {
     }
 
     @Test
-    void testCalculateSellOrder_WithProfit_BelowTaxLimit() {
+    void calculateSellOrder_WithProfitBelowTaxLimit_Expect_NoTax() {
         StockOrder buyOrder = new StockOrder(OrderType.BUY, new BigDecimal("40.00"), 300);
         StockOrder sellOrder = new StockOrder(OrderType.SELL, new BigDecimal("50.00"), 300);
 
-        List<Rate> rates = taxCalculatorService.calculate(List.of(buyOrder,sellOrder));
+        List<Rate> rates = taxCalculatorService.calculate(List.of(buyOrder, sellOrder));
 
         assertEquals(2, rates.size());
         assertEquals(new BigDecimal("0.00"), rates.getFirst().tax());
@@ -69,24 +69,24 @@ class StockTaxCalculatorServiceUnitTest {
     }
 
     @Test
-    void testCalculateSellOrder_WithLoss() {
+    void calculateSellOrder_WithLoss_Expect_NoTaxAndLossRecorded() {
         StockOrder buyOrder = new StockOrder(OrderType.BUY, new BigDecimal("40.00"), 100);
         StockOrder sellOrder = new StockOrder(OrderType.SELL, new BigDecimal("40.00"), 100);
 
-        List<Rate> rates = taxCalculatorService.calculate(List.of(buyOrder,sellOrder));
+        List<Rate> rates = taxCalculatorService.calculate(List.of(buyOrder, sellOrder));
 
         assertEquals(2, rates.size());
-        assertEquals(new BigDecimal("0.00"), rates.get(0).tax());
+        assertEquals(new BigDecimal("0.00"), rates.getFirst().tax());
         assertEquals(new BigDecimal("0.00"), stockState.getLoss());
     }
 
     @Test
-    void testCalculateSellOrder_WithTaxDeduction() {
+    void calculateSellOrder_WithTaxDeduction_Expect_TaxReducedByLoss() {
         StockOrder buyOrder = new StockOrder(OrderType.BUY, new BigDecimal("40.00"), 500);
         StockOrder sellOrder = new StockOrder(OrderType.SELL, new BigDecimal("60.00"), 500);
         stockState.setLoss(new BigDecimal("500.00"));
 
-        List<Rate> rates = taxCalculatorService.calculate(List.of(buyOrder,sellOrder));
+        List<Rate> rates = taxCalculatorService.calculate(List.of(buyOrder, sellOrder));
 
         assertEquals(2, rates.size());
         assertEquals(new BigDecimal("0.00"), rates.getFirst().tax());
