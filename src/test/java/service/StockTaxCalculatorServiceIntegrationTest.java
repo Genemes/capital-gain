@@ -27,10 +27,7 @@ public class StockTaxCalculatorServiceIntegrationTest {
     @BeforeEach
     void setUp() {
         StockState stockState = new StockState();
-        Map<OrderType, OperationStrategy> strategies = new HashMap<>();
-        strategies.put(OrderType.BUY, new BuyOperationStrategy());
-        strategies.put(OrderType.SELL, new SellOperationStrategy());
-        service = new StockTaxCalculatorService(stockState, strategies);
+        service = new StockTaxCalculatorService(stockState);
     }
 
     @Test

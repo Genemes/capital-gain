@@ -7,45 +7,57 @@ import com.google.gson.reflect.TypeToken;
 import com.nubank.domain.Rate;
 import com.nubank.domain.StockOrder;
 import com.nubank.domain.StockState;
-import com.nubank.domain.enums.OrderType;
-import com.nubank.domain.strategy.BuyOperationStrategy;
-import com.nubank.domain.strategy.OperationStrategy;
-import com.nubank.domain.strategy.SellOperationStrategy;
 import com.nubank.service.StockTaxCalculatorService;
 import com.nubank.utils.StockOrderDeserializer;
 
-import java.util.HashMap;
-import java.util.List;
 import java.lang.reflect.Type;
-import java.util.Map;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        String json = "[{\"operation\":\"buy\", \"unit-cost\":20.00, \"quantity\":10}, " +
-                "{\"operation\":\"sell\", \"unit-cost\":20.00, \"quantity\":5},"+
-                "{\"operation\":\"buy\", \"unit-cost\":10.00, \"quantity\":5}]";
+    private static final Gson gson = createGson();
+    private static final StockState stockState = new StockState();
+    private static final StockTaxCalculatorService service = new StockTaxCalculatorService(stockState);
 
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Cole cada lista JSON e pressione Enter para processar. Pressione Ctrl+C para sair.");
+
+        while (scanner.hasNextLine()) {
+            String jsonChunk = scanner.nextLine().trim();
+
+            if (!jsonChunk.isEmpty()) {
+                processJsonChunk(jsonChunk);
+            }
+        }
+    }
+
+    private static Gson createGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(StockOrder.class, new StockOrderDeserializer());
-        Gson gson = gsonBuilder.create();
+        return gsonBuilder.create();
+    }
 
+    private static void processJsonChunk(String jsonChunk) {
         try {
-            Type listType = new TypeToken<List<StockOrder>>() {}.getType();
-            List<StockOrder> stockOrders = gson.fromJson(json, listType);
-
-            StockState stockState = new StockState();
-            Map<OrderType, OperationStrategy> strategies = new HashMap<>();
-            strategies.put(OrderType.BUY, new BuyOperationStrategy());
-            strategies.put(OrderType.SELL, new SellOperationStrategy());
-            StockTaxCalculatorService service = new StockTaxCalculatorService(stockState, strategies);
+            List<StockOrder> stockOrders = parseJsonToStockOrders(jsonChunk);
             List<Rate> rates = service.calculate(stockOrders);
-            for (Rate rate : rates) {
-                System.out.println(rate);
-            }
-
-            System.out.println("Received JSON: " + gson.toJson(stockOrders));
+            printRates(rates);
         } catch (JsonSyntaxException e) {
-            System.err.println("Erro ao converter JSON: " + e.getMessage());
+            handleJsonError(e);
         }
+    }
+
+    private static List<StockOrder> parseJsonToStockOrders(String jsonChunk) {
+        Type listType = new TypeToken<List<StockOrder>>() {}.getType();
+        return gson.fromJson(jsonChunk, listType);
+    }
+
+    private static void printRates(List<Rate> rates) {
+        System.out.println(gson.toJson(rates));
+    }
+
+    private static void handleJsonError(JsonSyntaxException e) {
+        System.err.println("Erro ao converter JSON: " + e.getMessage());
     }
 }
