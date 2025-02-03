@@ -4,12 +4,17 @@ import com.nubank.domain.Rate;
 import com.nubank.domain.StockOrder;
 import com.nubank.domain.StockState;
 import com.nubank.domain.enums.OrderType;
+import com.nubank.domain.strategy.BuyOperationStrategy;
+import com.nubank.domain.strategy.OperationStrategy;
+import com.nubank.domain.strategy.SellOperationStrategy;
 import com.nubank.service.StockTaxCalculatorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,11 +22,15 @@ class StockTaxCalculatorServiceUnitTest {
 
     private StockTaxCalculatorService taxCalculatorService;
     private StockState stockState;
+    Map<OrderType, OperationStrategy> strategies;
 
     @BeforeEach
     void setUp() {
         stockState = new StockState();
-        taxCalculatorService = new StockTaxCalculatorService(stockState);
+        Map<OrderType, OperationStrategy> strategies = new HashMap<>();
+        strategies.put(OrderType.BUY, new BuyOperationStrategy());
+        strategies.put(OrderType.SELL, new SellOperationStrategy());
+        taxCalculatorService = new StockTaxCalculatorService(stockState, strategies);
     }
 
     @Test
