@@ -1,0 +1,11 @@
+com/nubank/domain/StockState.class
+com/nubank/service/StockTaxCalculatorService.class
+com/nubank/Main.class
+com/nubank/domain/strategy/BuyOperationStrategy.class
+com/nubank/domain/StockOrder.class
+com/nubank/Main$1.class
+com/nubank/domain/enums/OrderType.class
+com/nubank/domain/Rate.class
+com/nubank/utils/StockOrderDeserializer.class
+com/nubank/domain/strategy/OperationStrategy.class
+com/nubank/domain/strategy/SellOperationStrategy.class

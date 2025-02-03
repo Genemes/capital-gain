@@ -2,32 +2,24 @@ package service;
 
 import com.nubank.domain.Rate;
 import com.nubank.domain.StockOrder;
-import com.nubank.domain.StockState;
 import com.nubank.domain.enums.OrderType;
-import com.nubank.domain.strategy.BuyOperationStrategy;
-import com.nubank.domain.strategy.OperationStrategy;
-import com.nubank.domain.strategy.SellOperationStrategy;
 import com.nubank.service.StockTaxCalculatorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StockTaxCalculatorServiceIntegrationTest {
 
     private StockTaxCalculatorService service;
-    private Map<OrderType, OperationStrategy> strategies;
 
     @BeforeEach
     void setUp() {
-        StockState stockState = new StockState();
-        service = new StockTaxCalculatorService(stockState);
+        service = new StockTaxCalculatorService();
     }
 
     @Test

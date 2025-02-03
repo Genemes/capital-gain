@@ -1,0 +1,10 @@
+/Users/genemessouza/Documents/Projects/capital-gain/capital-gain/src/main/java/com/nubank/Main.java
+/Users/genemessouza/Documents/Projects/capital-gain/capital-gain/src/main/java/com/nubank/domain/Rate.java
+/Users/genemessouza/Documents/Projects/capital-gain/capital-gain/src/main/java/com/nubank/domain/StockOrder.java
+/Users/genemessouza/Documents/Projects/capital-gain/capital-gain/src/main/java/com/nubank/domain/StockState.java
+/Users/genemessouza/Documents/Projects/capital-gain/capital-gain/src/main/java/com/nubank/domain/enums/OrderType.java
+/Users/genemessouza/Documents/Projects/capital-gain/capital-gain/src/main/java/com/nubank/domain/strategy/BuyOperationStrategy.java
+/Users/genemessouza/Documents/Projects/capital-gain/capital-gain/src/main/java/com/nubank/domain/strategy/OperationStrategy.java
+/Users/genemessouza/Documents/Projects/capital-gain/capital-gain/src/main/java/com/nubank/domain/strategy/SellOperationStrategy.java
+/Users/genemessouza/Documents/Projects/capital-gain/capital-gain/src/main/java/com/nubank/service/StockTaxCalculatorService.java
+/Users/genemessouza/Documents/Projects/capital-gain/capital-gain/src/main/java/com/nubank/utils/StockOrderDeserializer.java
