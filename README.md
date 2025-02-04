@@ -66,3 +66,14 @@ Caso queira executar os testes utilize o comando:
 ```
 mvn test
 ```
+
+## Libs utilizadas
+
+### 1. Gson
+Gson foi usado para facilitar a serialização e deserialização do input, no formato **json** para objetos **Java**, assim como no processo inverso.
+
+### 2. JUnit
+O uso do JUnit foi motivado para escrever os testes de unidade e de integração.
+A adoção de testes garantiu que os cálculos das operações retornassem os valores esperados.
+Outra vantagem, foi a facilidade de refatorar e evoluir o código sem preocupar-se com a alteração do resultado,
+pois em qualquer refatoração feita, podemos rapidamente re-executar os testes e conferir se todos os testes continuavam passando.
