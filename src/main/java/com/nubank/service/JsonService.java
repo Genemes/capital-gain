@@ -14,11 +14,11 @@ import java.util.List;
 public class JsonService {
 
     private static final Gson gson = configureGson();
-    private final StockTaxCalculatorService service = new StockTaxCalculatorService();
 
     public void processStockOrdersFromJson(String json) {
         try {
             List<StockOrder> orders = deserializeJsonToStockOrders(json);
+            var service = new StockTaxCalculatorService();
             List<Rate> rates = service.calculate(orders);
 
             System.out.println(gson.toJson(rates));
