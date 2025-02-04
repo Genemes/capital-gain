@@ -34,7 +34,7 @@ Com o padrão Strategy, a classe `StockTaxCalculatorService` pode selecionar din
 ## Passos para executar a aplicação usando Docker
 ### 1. Construir a imagem Docker:
 ```
-docker build -t capital-gain .
+docker build -t capital-gain
 ```
 ### 1. Executar o cantainer:
 ```
